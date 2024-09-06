@@ -19,15 +19,21 @@ const createWindow = () => {
     // and load the index.html of the app.
     mainWindow.loadFile(path.join(__dirname, '/front/index.html'));
 
-    // Open the DevTools.
     let menu = Menu.buildFromTemplate([]);
-    //Menu.setApplicationMenu(menu);
+    Menu.setApplicationMenu(menu);
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+function getRoot(){
+    if (__dirname.indexOf('.asar') === -1){
+        return __dirname;
+    }else{
+        return path.dirname(app.getPath('exe'));
+    }
+}
+app.whenReady().then(async () => {
     createWindow();
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -36,6 +42,24 @@ app.whenReady().then(() => {
             createWindow();
         }
     });
+    console.log(`Checking Existing Save Directories`)
+    console.log(__dirname,getRoot());
+    if (!await fs.existsSync(getRoot()+"/saves")){
+        fs.mkdir(path.join(getRoot(), 'saves'),(err) => {
+            if (err) {
+                return console.error(err);
+            }
+            console.log('Directory saves created successfully!');
+        });
+    }
+    if (!await fs.existsSync(getRoot()+"/templates")){
+        fs.mkdir(path.join(getRoot(), 'templates'),(err) => {
+            if (err) {
+                return console.error(err);
+            }
+            console.log('Directory templates created successfully!');
+        });
+    }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -50,7 +74,7 @@ app.on('window-all-closed', () => {
 
 ipcMain.on("DATA_TO_MAIN",async (event,args)=>{
     if (args.type == "LOAD_JSON"){
-        dialog.showOpenDialog({defaultPath:"./../saves/",filters:[{name:"JSON",extensions:['json']}], properties:['openFile']}).then(async res=>{
+        dialog.showOpenDialog({defaultPath:getRoot()+"\\saves",filters:[{name:"JSON",extensions:['json']}], properties:['openFile']}).then(async res=>{
             if (!res.canceled){
                 try{
                     let file = await fs.readFileSync(res.filePaths[0],'utf-8');
@@ -64,7 +88,7 @@ ipcMain.on("DATA_TO_MAIN",async (event,args)=>{
         })
     }
     if (args.type == "SAVE_JSON"){
-        dialog.showSaveDialog({defaultPath:"./../saves/",filters:[{name:"JSON",extensions:['json']}]}).then(async res=>{
+        dialog.showSaveDialog({defaultPath:getRoot()+"\\saves",filters:[{name:"JSON",extensions:['json']}]}).then(async res=>{
             if (!res.canceled){
                 try{
                     let saveFile = JSON.stringify({stats:args.stats,values:args.values});
@@ -77,7 +101,7 @@ ipcMain.on("DATA_TO_MAIN",async (event,args)=>{
         })
     }
     if (args.type == "SAVE_TEMPLATE"){
-        dialog.showSaveDialog({defaultPath:"./../templates/",filters:[{name:"JSON",extensions:['json']}]}).then(async res=>{
+        dialog.showSaveDialog({defaultPath:getRoot()+"\\templates",filters:[{name:"JSON",extensions:['json']}]}).then(async res=>{
             if (!res.canceled){
                 try{
                     let saveFile = JSON.stringify({stats:args.stats});
@@ -90,7 +114,7 @@ ipcMain.on("DATA_TO_MAIN",async (event,args)=>{
         })
     }
     if (args.type == "LOAD_TEMPLATE"){
-        dialog.showOpenDialog({defaultPath:"./../templates/",filters:[{name:"JSON",extensions:['json']}], properties:['openFile']}).then(async res=>{
+        dialog.showOpenDialog({defaultPath:getRoot()+"\\templates",filters:[{name:"JSON",extensions:['json']}], properties:['openFile']}).then(async res=>{
             if (!res.canceled){
                 try{
                     let file = await fs.readFileSync(res.filePaths[0],'utf-8');
@@ -104,7 +128,7 @@ ipcMain.on("DATA_TO_MAIN",async (event,args)=>{
         })
     }
     if (args.type == "SAVE_TXT"){
-        dialog.showSaveDialog({defaultPath:"./../",filters:[{name:"TEXT",extensions:['txt']}]}).then(async res=>{
+        dialog.showSaveDialog({defaultPath:getRoot(),filters:[{name:"TEXT",extensions:['txt']}]}).then(async res=>{
             if (!res.canceled){
                 try{
                     let saveFile = `Персонаж: N\n`;

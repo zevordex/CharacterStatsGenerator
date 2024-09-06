@@ -46,6 +46,7 @@ function rebuildStats(){
                 values[c] = "Не настроено";
             }
         }
+        htmlString+=`<button class="stat-delete" i="${c}">X</button>`
         c++;
         htmlString+=`</div>`
     })
