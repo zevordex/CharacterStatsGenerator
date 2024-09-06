@@ -45,6 +45,7 @@ html {
     margin-left: 20px;
     border-radius: 10px;
     padding: 1px;
+    overflow-y: scroll;
 }
 .string-variant{
     margin-top: 2px;

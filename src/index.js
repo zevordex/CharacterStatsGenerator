@@ -20,7 +20,7 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, '/front/index.html'));
 
     let menu = Menu.buildFromTemplate([]);
-    Menu.setApplicationMenu(menu);
+    //Menu.setApplicationMenu(menu);
 };
 
 // This method will be called when Electron has finished

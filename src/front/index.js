@@ -96,9 +96,17 @@ document.addEventListener('click',ev=>{
         }
         return;
     }
+    if (ev.target.classList.contains("stat-delete")){
+        id = parseInt(ev.target.getAttribute('i'));
+        StatsSettings.stats.splice(id,1);
+        values.splice(id,1);
+        rebuildStats();
+        return;
+    }
     if (ev.target.classList.contains("stat-reroll")){
         id = parseInt(ev.target.getAttribute('i'));
         rerollStat(id);
+        return;
     }
     if (ev.target.classList.contains('modal-container')){
         closeModal();
