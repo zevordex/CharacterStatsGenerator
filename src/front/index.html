@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>StatsGenerator</title>
+        <link rel="stylesheet" href="index.css" />
+    </head>
+    <body>
+        <div class="modal-container hidden">
+            <div class="modal" id="edit-modal">
+                <div class="horizontal">
+                    <div class="vertical">
+                        <span><p>Название:</p> <input type="text" id="modal-edit-name"></span>
+                        <span><p>Тип:</p> <select id="modal-edit-type"><option value="NUMBER">Число</option><option value="STRING">Строка</option></select></span>
+                        <span id="modal-edit-maximum-span"><p>Максимум:</p> <input type="number" id="modal-edit-maximum"></span>
+                        <span id="modal-edit-minimum-span"><p>Минимум:</p> <input type="number" id="modal-edit-minimum"></span>
+                        <button class="hidden" id="modal-edit-add-string">Добавить строку</button>
+                        <button id="modal-edit-submit">Изменить</button>
+                    </div>
+                    <div class="edit-modal-string-list hidden">
+                            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <main>
+            <div class="stats-container">
+                
+            </div>
+            <div class="button-container">
+                <div class="button-panel">
+                    <button id="all-reroll">Зарандомить характеристики</button>
+                    <div>
+                        <p>Сохранение и загрузка полного файла.</p>
+                        <button id="save-json">Сохранить как</button>
+                        <button id="load-json">Загрузить файл</button>
+                    </div>
+                    <div>
+                        <p>Сохранение и загрузка файла шаблона.</p>
+                        <button id="save-template">Сохранить шаблон</button>
+                        <button id="load-template">Загрузить шаблон</button>
+                    </div>
+                    <div>
+                        <p>Экспорт</p>
+                        <button id="save-txt">Экспортировать в txt</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="index.js"></script>
+    </body>
+</html>
